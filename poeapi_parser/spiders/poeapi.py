@@ -47,6 +47,7 @@ class PoeApiSpider(scrapy.Spider):
                 league=league,
                 lastname=last_name,
                 stashname=stash_name,
+                stashhash=stash['id'],
                 items=[]
             )
             for item in stash['items']:

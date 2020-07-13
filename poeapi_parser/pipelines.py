@@ -40,19 +40,15 @@ class PoeapiParserPipeline(object):
             c.execute('insert into chars (name, account_id) values (%s,%s) on \
                     duplicate key update \
                     id=last_insert_id(id), account_id=%s', (item['lastname'], acc_id, acc_id))
-
-            c.execute('delete from items where account_id=%s and league_id=%s', (acc_id, league_id))
+            stash_hash = item['stashhash']
+            c.execute('delete from stashes where hash=%s', stash_hash)
+            c.execute('insert into stashes (hash, account_id, league_id, name) values (%s,%s,%s,%s)\
+                      ', (stash_hash, acc_id, league_id, item['stashname']))
+            stash_id = c.lastrowid
             for i in item['items']:
-                # c.execute('insert into items (account_id, league_id, verified, stash_name, stash_hash, x, y, item_hash)\
-                #            values (%s,%s,%s,%s,%s,%s,%s) on duplicate key\
-                #            update \
-                #            account_id=%s, league_id=%s, verified=%s, stash_name=%s, x=%s, y=%s, last_updated=current_timestamp()',
-                #           (acc_id, league_id, i['verified'], item['stashname'], i['x'], i['y'], i['hash'],
-                #            acc_id, league_id, i['verified'], item['stashname'], i['x'], i['y'])
-                # )
-                c.execute('insert into items (account_id, league_id, verified, stash_name, x, y)\
-                           values (%s,%s,%s,%s,%s,%s)',
-                          (acc_id, league_id, i['verified'], item['stashname'], i['x'], i['y']))
+                c.execute('insert into items (stash_id, verified, x, y)\
+                           values (%s,%s,%s,%s)',
+                          (stash_id, i['verified'], i['x'], i['y']))
                 item_id = c.lastrowid
                 cvalues = []
                 for craft in i['crafts']:
