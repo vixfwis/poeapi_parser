@@ -3,7 +3,7 @@
 import scrapy
 
 
-class Horticraft(scrapy.Item):
+class HorticraftTab(scrapy.Item):
     acc = scrapy.Field()
     league = scrapy.Field()
     lastname = scrapy.Field()

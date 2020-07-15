@@ -3,7 +3,7 @@ import scrapy
 import os
 import json
 import re
-from poeapi_parser.items import Horticraft
+from poeapi_parser.items import HorticraftTab
 
 currency_names = {
     'chaos': ['c', 'chaos', 'cha'],
@@ -42,7 +42,7 @@ class PoeApiSpider(scrapy.Spider):
             last_name = stash['lastCharacterName']
             stash_name = stash['stash']
             league = stash['league']
-            out = Horticraft(
+            out = HorticraftTab(
                 acc=acc_name,
                 league=league,
                 lastname=last_name,
@@ -68,6 +68,7 @@ class PoeApiSpider(scrapy.Spider):
                     'verified': ver,
                     'x': x,
                     'y': y,
+                    'itemhash': item['id'],
                     'crafts': []
                 }
                 parts = note[1:].split('/')
@@ -88,7 +89,8 @@ class PoeApiSpider(scrapy.Spider):
                             'currname': price_currency
                         })
                         # print(f'{last_name} -> {mod} for {price_value} {price_currency} (ilvl {ilvl})')
-                out['items'].append(itemdata)
+                if len(itemdata['crafts']) > 0:
+                    out['items'].append(itemdata)
             if len(out['items']) > 0:
                 yield out
 
