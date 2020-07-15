@@ -52,7 +52,7 @@ class PoeapiParserPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, HorticraftTab):
-            c = self.conn.cursor(cursor=LoggingCursor)
+            c = self.conn.cursor()
             c.execute('begin')
             c.execute('insert into accounts (name) values (%s) on duplicate key update id=last_insert_id(id)', item['acc'])
             acc_id = c.lastrowid
@@ -84,9 +84,9 @@ class PoeapiParserPipeline(object):
                 if itemhash in existing_items:
                     c.execute('update items set verified=%s, x=%s, y=%s, last_updated=current_timestamp()\
                                where id=%s', (i['verified'], i['x'], i['y'], existing_items[itemhash]['id']))
+                    c.execute('delete from hcrafts where item_id = %s', existing_items[itemhash]['id'])
                     cvalues = []
                     for craft in i['crafts']:
-                        c.execute('delete from hcrafts where item_id = %s', existing_items[itemhash]['id'])
                         craftname = craft['craftname']
                         if craftname in self.cnames:
                             craft_id = self.cnames[craftname]
@@ -149,8 +149,7 @@ class PoeapiParserPipeline(object):
                 leftovers = []
                 for k in existing_items:
                     leftovers.append(existing_items[k]['id'])
-                print(",".join(leftovers))
-                c.execute(f'delete from items where id in ({",".join(leftovers)})')
+                c.execute(f'delete from items where id in ({",".join([str(e) for e in leftovers])})')
 
             c.execute('commit')
         return item
