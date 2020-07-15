@@ -108,7 +108,7 @@ class PoeapiParserPipeline(object):
                             self.curr[currname] = curr_id
 
                         cvalues.append((
-                            existing_items[itemhash]['id'], craft_id, craft['price'], curr_id, craft['price']
+                            existing_items[itemhash]['id'], craft_id, craft['price'], curr_id, craft['ilvl']
                         ))
                     c.executemany('insert into hcrafts (item_id, craft_id, price, currency_id, ilvl) values\
                                                    (%s,%s,%s,%s,%s)', cvalues)
@@ -141,7 +141,7 @@ class PoeapiParserPipeline(object):
                             self.curr[currname] = curr_id
 
                         cvalues.append((
-                            item_id, craft_id, craft['price'], curr_id, craft['price']
+                            item_id, craft_id, craft['price'], curr_id, craft['ilvl']
                         ))
                     c.executemany('insert into hcrafts (item_id, craft_id, price, currency_id, ilvl) values\
                                                    (%s,%s,%s,%s,%s)', cvalues)
