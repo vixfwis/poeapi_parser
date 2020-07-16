@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
+import os
 
-# Scrapy settings for poeapi_parser project
-#
-# For simplicity, this file contains only settings considered important or
-# commonly used. You can find more settings consulting the documentation:
-#
-#     https://docs.scrapy.org/en/latest/topics/settings.html
-#     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 BOT_NAME = 'poeapi_parser'
 
-LOG_LEVEL = 'INFO'
+LOG_LEVEL = 'ERROR'
 SPIDER_MODULES = ['poeapi_parser.spiders']
 NEWSPIDER_MODULE = 'poeapi_parser.spiders'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0'
@@ -31,6 +24,11 @@ AUTOTHROTTLE_START_DELAY = 1
 AUTOTHROTTLE_MAX_DELAY = 30
 AUTOTHROTTLE_TARGET_CONCURRENCY = 1
 AUTOTHROTTLE_DEBUG = False
+
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_NAME = os.getenv('DB_NAME', 'poeapi')
+DB_USER = os.getenv('DB_USER', 'poeapi')
+DB_PASSWORD = os.getenv('DB_PASSWORD', '')
 
 # HTTPCACHE_ENABLED = True
 # HTTPCACHE_EXPIRATION_SECS = 0

@@ -2,6 +2,7 @@
 from poeapi_parser.items import HorticraftTab
 import pymysql
 import logging
+from scrapy.utils.project import get_project_settings
 
 
 class LoggingCursor(pymysql.cursors.Cursor):
@@ -26,11 +27,12 @@ class LoggingCursor(pymysql.cursors.Cursor):
 
 class PoeapiParserPipeline(object):
     def open_spider(self, spider):
+        settings = get_project_settings()
         self.conn = pymysql.connect(
-            host='localhost',
-            user='poeapi',
-            password='',
-            db='poeapi',
+            host=settings['DB_HOST'],
+            user=settings['DB_USER'],
+            password=settings['DB_PASSWORD'],
+            db=settings['DB_NAME'],
             charset='utf8mb4',
         )
         c = self.conn.cursor()

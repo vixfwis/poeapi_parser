@@ -1,0 +1,10 @@
+[Unit]
+Description=PoE API Parser (Harvest Crafts)
+
+[Service]
+Type=simple
+WorkingDirectory=/var/harvestapi/poeapi_parser
+ExecStart=/bin/bash /var/harvestapi/poeapi_parser/start.sh
+
+[Install]
+WantedBy=multi-user.target

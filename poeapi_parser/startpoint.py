@@ -1,4 +1,3 @@
-import scrapy
 import os
 import sys
 dir_path, _ = os.path.split(os.path.dirname(os.path.realpath(__file__)))
